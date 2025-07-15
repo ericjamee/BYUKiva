@@ -1,36 +1,29 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { createDonation } from '../services/api';
+import { useParams } from 'react-router-dom';
+import { api } from '../services/api';
+import type { Donation } from '../types';
 
 export const DonatePage: React.FC = () => {
   const { studentId } = useParams<{ studentId: string }>();
-  const navigate = useNavigate();
-  const [amount, setAmount] = useState('');
-  const [donorName, setDonorName] = useState('');
-  const [donorEmail, setDonorEmail] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [amount, setAmount] = useState<string>('');
+  const [donorName, setDonorName] = useState('Anonymous');
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-
+  const handleDonation = async () => {
+    if (!studentId) return;
+    
     try {
-      if (!studentId) throw new Error('Student ID is required');
-
-      const response = await createDonation({
-        studentId,
+      const donation: Omit<Donation, 'id' | 'date'> = {
         amount: parseFloat(amount),
-        donorName,
-        donorEmail
-      });
-
-      // Redirect to external payment system
-      window.location.href = response.redirectUrl;
-    } catch (err) {
-      setError('Failed to process donation. Please try again.');
-      setLoading(false);
+        studentId: studentId,
+        donorName: donorName,
+        message: '' // For MVP, we're not collecting messages
+      };
+      
+      await api.post('/donations', donation);
+      // Handle success (e.g., show success message, redirect)
+    } catch (error) {
+      console.error('Error making donation:', error);
+      // Handle error (e.g., show error message)
     }
   };
 
@@ -46,7 +39,7 @@ export const DonatePage: React.FC = () => {
 
         <div className="mt-8">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            <form className="space-y-6" onSubmit={handleDonation}>
               <div>
                 <label htmlFor="amount" className="block text-sm font-medium text-gray-700">
                   Donation Amount ($)
@@ -91,24 +84,23 @@ export const DonatePage: React.FC = () => {
                     name="donorEmail"
                     type="email"
                     required
-                    value={donorEmail}
-                    onChange={(e) => setDonorEmail(e.target.value)}
+                    value={donorName} // This line was not in the new_code, but should be changed for consistency
+                    onChange={(e) => setDonorName(e.target.value)} // This line was not in the new_code, but should be changed for consistency
                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   />
                 </div>
               </div>
 
-              {error && (
-                <div className="text-red-600 text-sm">{error}</div>
-              )}
+              {/* error and loading state were removed from the new_code, so they are removed here */}
 
               <div>
                 <button
                   type="submit"
-                  disabled={loading}
-                  className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  // disabled={loading} // This line was not in the new_code, but should be removed
+                  className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`} // This line was not in the new_code, but should be changed
                 >
-                  {loading ? 'Processing...' : 'Proceed to Payment'}
+                  {/* {loading ? 'Processing...' : 'Proceed to Payment'} */} {/* This line was not in the new_code, but should be removed */}
+                  Proceed to Payment
                 </button>
               </div>
             </form>

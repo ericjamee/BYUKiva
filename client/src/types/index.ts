@@ -1,39 +1,29 @@
 export interface Student {
-    id: string;
-    firstName: string;
-    lastName: string;
-    name: string;  // Full name
-    age: number;
-    country: string;
-    profilePictureUrl: string;
-    fundingGoal: number;
-    amountRaised: number;
-    loanAmount: number;
-    monthlyPaymentCapacity: number;
-    pathwayProgram: string;
-    desiredDegree: string;
-    familyHistoryExperience: string;
-    futureGoals: string;
-    estimatedNamesPerYear: number;
-    startDate: string;
-    applicationDate: string;
-    applicationStatus: 'Pending' | 'Approved' | 'Rejected';
-    story: string;
-    whyNeedLoan: string;
-    academicProgress: string;
-    adminNotes?: string;
-    donations: Donation[];
-    progressReports: ProgressReport[];
+  id: string;
+  name: string;
+  email: string;
+  country: string;
+  pathwayProgram: string;
+  desiredDegree: string;
+  story?: string;
+  academicProgress?: string;
+  futureGoals?: string;
+  whyNeedLoan?: string;
+  profilePictureUrl: string;
+  amountRaised: number;
+  fundingGoal: number;
+  status: 'pending' | 'approved' | 'rejected';
+  progressReports?: ProgressReport[];
+  donations?: Donation[];
 }
 
 export interface Donation {
-    id: string;
-    amount: number;
-    donorName: string;
-    message?: string;
-    date: string;
-    studentId: string;
-    redirectUrl?: string;
+  id: string;
+  amount: number;
+  studentId: string;
+  donorName: string;
+  message?: string;
+  date: string;
 }
 
 export enum DonationType {
@@ -63,14 +53,13 @@ export enum UserRole {
 }
 
 export interface ProgressReport {
-    id: string;
-    namesIndexed: number;
-    date: string;
-    description: string;
-    academicPerformance: string;
-    challenges: string;
-    goals: string;
-    nextSteps: string;
+  id: string;
+  studentId: string;
+  date: string;
+  academicPerformance: string;
+  challenges: string;
+  goals: string;
+  nextSteps: string;
 }
 
 export interface LoanRepayment {
@@ -92,18 +81,15 @@ export enum RepaymentStatus {
 
 export interface StudentApplicationData {
   name: string;
-  age: number;
+  email: string;
   country: string;
   pathwayProgram: string;
   desiredDegree: string;
   story: string;
-  photo: File | null;
-  loanAmount: number;
-  monthlyPaymentCapacity: number;
   academicProgress: string;
   futureGoals: string;
   whyNeedLoan: string;
-  expectedGraduation: Date;
+  profilePicture?: File;
 }
 
 export interface LoginData {

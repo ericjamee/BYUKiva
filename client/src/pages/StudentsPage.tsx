@@ -1,68 +1,62 @@
-import { useState, useEffect } from 'react';
-import StudentCard from '../components/StudentCard';
-import { fetchStudents } from '../services/api';
+import React, { useState, useEffect } from 'react';
+import { api } from '../services/api';
 import type { Student } from '../types';
+import StudentCard from '../components/StudentCard';
 
-export function StudentsPage() {
+export const StudentsPage: React.FC = () => {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const loadStudents = async () => {
+    const fetchStudents = async () => {
       try {
-        const data = await fetchStudents();
-        setStudents(data);
-        setLoading(false);
+        const response = await api.get<Student[]>('/students');
+        setStudents(response.data);
       } catch (err) {
-        setError('Failed to load students. Please try again later.');
+        setError('Failed to fetch students');
+      } finally {
         setLoading(false);
       }
     };
 
-    loadStudents();
+    fetchStudents();
   }, []);
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-          </div>
-        </div>
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#002E5D]"></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center text-red-600">{error}</div>
-        </div>
+      <div className="text-center py-12">
+        <p className="text-red-600">{error}</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-            Our Family History Students
-          </h1>
-          <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
-            Support a student's education while helping preserve family histories. Each student commits to indexing 100,000 names per year.
-          </p>
-        </div>
-
-        <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {students.map((student) => (
-            <StudentCard key={student.id} student={student} />
-          ))}
-        </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900">Students</h1>
+        <p className="mt-2 text-gray-600">Support BYU-Pathway students in their educational journey</p>
       </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {students.map((student) => (
+          <StudentCard key={student.id} student={student} />
+        ))}
+      </div>
+
+      {students.length === 0 && (
+        <div className="text-center py-12">
+          <p className="text-gray-600">No students found</p>
+        </div>
+      )}
     </div>
   );
-} 
+}; 
