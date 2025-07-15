@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
-import { StudentApplication } from '../types';
+import type { StudentApplication } from '../types';
 
 export const StudentApplicationPage: React.FC = () => {
   const navigate = useNavigate();
