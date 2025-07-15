@@ -3,21 +3,35 @@ using Integrity.API.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Npgsql;
+using Microsoft.EntityFrameworkCore.Npgsql.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    if (builder.Environment.IsProduction())
+    var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ?? 
+                         builder.Configuration.GetConnectionString("DefaultConnection");
+    
+    // If we have a DATABASE_URL (from Heroku/Render), convert it to Npgsql format
+    if (connectionString?.StartsWith("postgres://") == true)
     {
-        options.UseNpgsql(connectionString);
+        var uri = new Uri(connectionString);
+        var userInfo = uri.UserInfo.Split(':');
+        connectionString = new NpgsqlConnectionStringBuilder
+        {
+            Host = uri.Host,
+            Port = uri.Port,
+            Database = uri.AbsolutePath.TrimStart('/'),
+            Username = userInfo[0],
+            Password = userInfo[1],
+            SslMode = SslMode.Require,
+            TrustServerCertificate = true,
+        }.ToString();
     }
-    else
-    {
-        options.UseSqlServer(connectionString);
-    }
+
+    options.UseNpgsql(connectionString);
 });
 
 // Configure JWT authentication
