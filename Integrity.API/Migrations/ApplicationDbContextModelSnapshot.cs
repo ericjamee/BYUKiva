@@ -17,7 +17,7 @@ namespace Integrity.API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.7")
+                .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -49,14 +49,9 @@ namespace Integrity.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("StudentId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("StudentId");
-
-                    b.HasIndex("StudentId1");
 
                     b.ToTable("Donations");
                 });
@@ -92,14 +87,9 @@ namespace Integrity.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("StudentId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("StudentId");
-
-                    b.HasIndex("StudentId1");
 
                     b.ToTable("ProgressReports");
                 });
@@ -177,7 +167,7 @@ namespace Integrity.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("WhyNeedLoan")
+                    b.Property<string>("WhyNeedDonation")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -188,30 +178,22 @@ namespace Integrity.API.Migrations
 
             modelBuilder.Entity("Integrity.API.Models.Donation", b =>
                 {
-                    b.HasOne("Integrity.API.Models.Student", null)
+                    b.HasOne("Integrity.API.Models.Student", "Student")
                         .WithMany("Donations")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Integrity.API.Models.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId1");
 
                     b.Navigation("Student");
                 });
 
             modelBuilder.Entity("Integrity.API.Models.ProgressReport", b =>
                 {
-                    b.HasOne("Integrity.API.Models.Student", null)
+                    b.HasOne("Integrity.API.Models.Student", "Student")
                         .WithMany("ProgressReports")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Integrity.API.Models.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId1");
 
                     b.Navigation("Student");
                 });

@@ -41,14 +41,14 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Student>()
             .HasMany(s => s.Donations)
-            .WithOne()
-            .HasForeignKey("StudentId")
+            .WithOne(d => d.Student)
+            .HasForeignKey(d => d.StudentId)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Student>()
             .HasMany(s => s.ProgressReports)
-            .WithOne()
-            .HasForeignKey("StudentId")
+            .WithOne(p => p.Student)
+            .HasForeignKey(p => p.StudentId)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Donation>()

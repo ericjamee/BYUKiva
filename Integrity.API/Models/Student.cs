@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Integrity.API.Models;
 
 public class Student
 {
+    [Key]
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
@@ -24,6 +26,10 @@ public class Student
     public string AcademicProgress { get; set; } = string.Empty;
     public string ApplicationStatus { get; set; } = "Pending";
     public string? AdminNotes { get; set; }
-    public ICollection<Donation> Donations { get; set; } = new List<Donation>();
-    public ICollection<ProgressReport> ProgressReports { get; set; } = new List<ProgressReport>();
+
+    [InverseProperty("Student")]
+    public virtual ICollection<Donation> Donations { get; set; } = new List<Donation>();
+
+    [InverseProperty("Student")]
+    public virtual ICollection<ProgressReport> ProgressReports { get; set; } = new List<ProgressReport>();
 } 
