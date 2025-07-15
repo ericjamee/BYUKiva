@@ -9,9 +9,7 @@ public class Donation
     public DateTime Date { get; set; } = DateTime.UtcNow;
     public string StudentId { get; set; } = string.Empty;
     public Student? Student { get; set; }
-    public string DonorName { get; set; } = string.Empty;
-    public string DonorEmail { get; set; } = string.Empty;
-    public string Status { get; set; } = "Pending"; // Pending, Completed, Cancelled
-    public string? ExternalPaymentId { get; set; }
-    public string? ExternalPaymentUrl { get; set; }
+    public string DonorName { get; set; } = "Anonymous";
+    public string? Message { get; set; }
+    public string Status { get; set; } = "Completed"; // For MVP, all donations are completed immediately
 } 

@@ -24,6 +24,7 @@ public class StudentsController : ControllerBase
         return await _context.Students
             .Include(s => s.ProgressReports)
             .Include(s => s.Donations)
+            .OrderBy(s => (s.AmountRaised / s.FundingGoal)) // Order by percentage funded (lowest first)
             .ToListAsync();
     }
 

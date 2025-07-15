@@ -1,20 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import type { Student, ProgressReport, LoanRepayment } from '../types';
+import type { Student, ProgressReport } from '../types';
 import { DonationType } from '../types';
-import { fetchStudent, createDonation, fetchStudentProgressReports, fetchStudentLoanRepayments } from '../services/api';
+import { fetchStudent, createDonation, fetchStudentProgressReports } from '../services/api';
 import { Modal } from '../components/Modal';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
 export function StudentProfile() {
   const { id } = useParams<{ id: string }>();
   const [student, setStudent] = useState<Student | null>(null);
   const [progressReports, setProgressReports] = useState<ProgressReport[]>([]);
-  const [loanRepayments, setLoanRepayments] = useState<LoanRepayment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'story' | 'progress' | 'repayments'>('story');
+  const [activeTab, setActiveTab] = useState<'story' | 'progress'>('story');
   const [donationModalOpen, setDonationModalOpen] = useState(false);
   const [donationAmount, setDonationAmount] = useState<number>(50);
   const [customAmount, setCustomAmount] = useState<string>('');
@@ -23,17 +22,20 @@ export function StudentProfile() {
   useEffect(() => {
     async function loadData() {
       try {
-        if (!id) return;
-        const [studentData, progressData, repaymentsData] = await Promise.all([
+        if (!id) {
+          setError('Student ID not found');
+          return;
+        }
+        setLoading(true);
+        const [studentData, progressData] = await Promise.all([
           fetchStudent(id),
-          fetchStudentProgressReports(id),
-          fetchStudentLoanRepayments(id)
+          fetchStudentProgressReports(id)
         ]);
         setStudent(studentData);
         setProgressReports(progressData);
-        setLoanRepayments(repaymentsData);
       } catch (err) {
-        setError('Failed to load student details');
+        console.error('Error loading student details:', err);
+        setError('Failed to load student details. Please try again later.');
       } finally {
         setLoading(false);
       }
@@ -51,10 +53,8 @@ export function StudentProfile() {
       await createDonation({
         studentId: student.id,
         amount,
-        type: donationType,
-        message: '',
-        isAnonymous: false,
-        donorId: 'temp-donor-id' // TODO: Get from auth context
+        donorName: 'Anonymous', // For MVP
+        message: ''
       });
 
       const updatedStudent = await fetchStudent(id!);
@@ -81,7 +81,10 @@ export function StudentProfile() {
     );
   }
 
-  const percentageFunded = (student.amountRaised / student.loanAmount) * 100;
+  const percentageFunded = Math.min(
+    ((student.amountRaised || 0) / (student.loanAmount || 1)) * 100,
+    100
+  );
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -90,8 +93,14 @@ export function StudentProfile() {
           <div className="md:flex-shrink-0">
             <img
               className="h-48 w-full object-cover md:h-full md:w-48"
-              src={`${API_BASE_URL}${student.profilePictureUrl}`}
+              src={student.profilePictureUrl.startsWith('http') 
+                ? student.profilePictureUrl 
+                : `${API_BASE_URL}${student.profilePictureUrl}`}
               alt={student.name}
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = 'https://via.placeholder.com/400x300?text=No+Image';
+              }}
             />
           </div>
           <div className="p-8">
@@ -113,12 +122,14 @@ export function StudentProfile() {
             <div className="mt-6">
               <div className="flex justify-between text-sm mb-1">
                 <span className="text-gray-600">Loan Progress</span>
-                <span className="font-medium">${student.amountRaised.toLocaleString()} of ${student.loanAmount.toLocaleString()}</span>
+                <span className="font-medium">
+                  ${(student.amountRaised || 0).toLocaleString()} of ${(student.loanAmount || 0).toLocaleString()}
+                </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div
                   className="bg-[#002E5D] h-2 rounded-full"
-                  style={{ width: `${Math.min(percentageFunded, 100)}%` }}
+                  style={{ width: `${percentageFunded}%` }}
                 />
               </div>
             </div>
@@ -147,16 +158,6 @@ export function StudentProfile() {
             >
               Progress Reports
             </button>
-            <button
-              onClick={() => setActiveTab('repayments')}
-              className={`flex-1 py-4 px-6 text-center font-medium ${
-                activeTab === 'repayments'
-                  ? 'text-[#002E5D] border-b-2 border-[#002E5D]'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              Loan Repayments
-            </button>
           </div>
 
           <div className="p-8">
@@ -164,19 +165,19 @@ export function StudentProfile() {
               <div className="space-y-6">
                 <div>
                   <h2 className="text-xl font-semibold text-gray-900 mb-2">My Story</h2>
-                  <p className="text-gray-600">{student.story}</p>
+                  <p className="text-gray-600">{student.story || 'No story available.'}</p>
                 </div>
                 <div>
                   <h2 className="text-xl font-semibold text-gray-900 mb-2">Academic Progress</h2>
-                  <p className="text-gray-600">{student.academicProgress}</p>
+                  <p className="text-gray-600">{student.academicProgress || 'No academic progress information available.'}</p>
                 </div>
                 <div>
                   <h2 className="text-xl font-semibold text-gray-900 mb-2">Future Goals</h2>
-                  <p className="text-gray-600">{student.futureGoals}</p>
+                  <p className="text-gray-600">{student.futureGoals || 'No future goals information available.'}</p>
                 </div>
                 <div>
                   <h2 className="text-xl font-semibold text-gray-900 mb-2">Why I Need This Loan</h2>
-                  <p className="text-gray-600">{student.whyNeedLoan}</p>
+                  <p className="text-gray-600">{student.whyNeedLoan || 'No loan need information available.'}</p>
                 </div>
               </div>
             )}
@@ -216,61 +217,6 @@ export function StudentProfile() {
                 )}
               </div>
             )}
-
-            {activeTab === 'repayments' && (
-              <div>
-                <div className="flex flex-col">
-                  <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                    <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                      <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                        <table className="min-w-full divide-y divide-gray-200">
-                          <thead className="bg-gray-50">
-                            <tr>
-                              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Date
-                              </th>
-                              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Amount
-                              </th>
-                              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Status
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody className="bg-white divide-y divide-gray-200">
-                            {loanRepayments.map((repayment) => (
-                              <tr key={repayment.id}>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                  {new Date(repayment.date).toLocaleDateString()}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                  ${repayment.amount.toLocaleString()}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                  <span
-                                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                      repayment.status === 'Paid'
-                                        ? 'bg-green-100 text-green-800'
-                                        : repayment.status === 'Late'
-                                        ? 'bg-red-100 text-red-800'
-                                        : repayment.status === 'Missed'
-                                        ? 'bg-red-100 text-red-800'
-                                        : 'bg-yellow-100 text-yellow-800'
-                                    }`}
-                                  >
-                                    {repayment.status}
-                                  </span>
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>
@@ -278,17 +224,16 @@ export function StudentProfile() {
       <Modal
         isOpen={donationModalOpen}
         onClose={() => setDonationModalOpen(false)}
-        title="Support This Student"
+        title={`Support ${student.name}`}
       >
-        <div className="space-y-6">
+        <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Select Amount
-            </label>
-            <div className="grid grid-cols-3 gap-4 mb-4">
-              {[50, 100, 250, 500, 1000].map((amount) => (
+            <label className="block text-sm font-medium text-gray-700">Select Amount</label>
+            <div className="mt-2 grid grid-cols-3 gap-3">
+              {[25, 50, 100].map((amount) => (
                 <button
                   key={amount}
+                  type="button"
                   onClick={() => {
                     setDonationAmount(amount);
                     setCustomAmount('');
@@ -296,25 +241,28 @@ export function StudentProfile() {
                   className={`px-4 py-2 text-sm font-medium rounded-md ${
                     donationAmount === amount && !customAmount
                       ? 'bg-[#002E5D] text-white'
-                      : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                      : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
                   }`}
                 >
                   ${amount}
                 </button>
               ))}
-              <div className="col-span-3">
-                <input
-                  type="number"
-                  placeholder="Custom amount"
-                  value={customAmount}
-                  onChange={(e) => {
-                    setCustomAmount(e.target.value);
-                    setDonationAmount(0);
-                  }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#002E5D]"
-                />
-              </div>
             </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Custom Amount</label>
+            <input
+              type="number"
+              min="1"
+              value={customAmount}
+              onChange={(e) => {
+                setCustomAmount(e.target.value);
+                setDonationAmount(0);
+              }}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#002E5D] focus:ring-[#002E5D] sm:text-sm"
+              placeholder="Enter amount"
+            />
           </div>
 
           <button
