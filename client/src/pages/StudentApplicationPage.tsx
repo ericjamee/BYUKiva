@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
-import { Student, StudentApplication } from '../types';
+import { StudentApplication } from '../types';
 
 export const StudentApplicationPage: React.FC = () => {
   const navigate = useNavigate();
@@ -22,13 +22,18 @@ export const StudentApplicationPage: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev: StudentApplication) => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setProfilePicture(file);
+      const formData = new FormData();
+      formData.append('profilePicture', file);
     }
   };
 
