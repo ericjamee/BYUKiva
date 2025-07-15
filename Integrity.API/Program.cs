@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Npgsql;
-using Microsoft.EntityFrameworkCore.Npgsql.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
