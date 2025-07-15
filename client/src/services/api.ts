@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Student, Donation, StudentApplicationData } from '../types';
+import type { Student, StudentApplication, Donation } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
@@ -22,7 +22,7 @@ api.interceptors.request.use((config) => {
 // Student endpoints
 export const getStudents = () => api.get<Student[]>('/students');
 export const getStudent = (id: string) => api.get<Student>(`/students/${id}`);
-export const createStudent = (data: StudentApplicationData) => {
+export const createStudent = (data: StudentApplication) => {
   const formData = new FormData();
   Object.entries(data).forEach(([key, value]) => {
     if (value !== null && value !== undefined) {

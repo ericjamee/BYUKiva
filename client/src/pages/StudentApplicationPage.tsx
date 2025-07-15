@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
-import type { StudentApplicationData } from '../types';
+import { Student, StudentApplication } from '../types';
 
 export const StudentApplicationPage: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [formData, setFormData] = useState<StudentApplicationData>({
+  const [formData, setFormData] = useState<StudentApplication>({
     name: '',
     email: '',
     country: '',
@@ -26,8 +26,9 @@ export const StudentApplicationPage: React.FC = () => {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setProfilePicture(e.target.files[0]);
+    const file = e.target.files?.[0];
+    if (file) {
+      setProfilePicture(file);
     }
   };
 
