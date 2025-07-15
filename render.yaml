@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: byukiva-api
+    env: docker
+    plan: free
+    region: ohio
+    buildCommand: dotnet publish -c Release
+    startCommand: dotnet Integrity.API/bin/Release/net7.0/Integrity.API.dll
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ConnectionStrings__DefaultConnection
+        fromDatabase:
+          name: byukiva-db
+          property: connectionString
+      - key: Jwt__Key
+        generateValue: true
+
+databases:
+  - name: byukiva-db
+    plan: free
+    region: ohio
+    ipAllowList: [] 
