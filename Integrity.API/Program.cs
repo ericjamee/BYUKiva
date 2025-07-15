@@ -10,26 +10,50 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ?? 
-                         builder.Configuration.GetConnectionString("DefaultConnection");
+    var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
+    
+    if (string.IsNullOrEmpty(connectionString))
+    {
+        // Log warning about missing DATABASE_URL
+        Console.WriteLine("Warning: DATABASE_URL environment variable is not set, falling back to DefaultConnection");
+        connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+        
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            throw new InvalidOperationException("No database connection string configured. Please set DATABASE_URL environment variable or DefaultConnection in appsettings.json");
+        }
+    }
     
     // If we have a DATABASE_URL (from Heroku/Render), convert it to Npgsql format
-    if (connectionString?.StartsWith("postgres://") == true)
+    if (connectionString.StartsWith("postgres://"))
     {
-        var uri = new Uri(connectionString);
-        var userInfo = uri.UserInfo.Split(':');
-        connectionString = new NpgsqlConnectionStringBuilder
+        try
         {
-            Host = uri.Host,
-            Port = uri.Port,
-            Database = uri.AbsolutePath.TrimStart('/'),
-            Username = userInfo[0],
-            Password = userInfo[1],
-            SslMode = SslMode.Require,
-            TrustServerCertificate = true,
-        }.ToString();
+            var uri = new Uri(connectionString);
+            var userInfo = uri.UserInfo.Split(':');
+            
+            if (userInfo.Length != 2)
+            {
+                throw new InvalidOperationException("Invalid DATABASE_URL format. Expected format: postgres://username:password@host:port/database");
+            }
+            
+            connectionString = new NpgsqlConnectionStringBuilder
+            {
+                Host = uri.Host,
+                Port = uri.Port,
+                Database = uri.AbsolutePath.TrimStart('/'),
+                Username = userInfo[0],
+                Password = userInfo[1],
+                SslMode = SslMode.Require,
+            }.ToString();
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException($"Failed to parse DATABASE_URL: {ex.Message}");
+        }
     }
 
+    Console.WriteLine($"Connecting to database host: {new Uri(connectionString.StartsWith("postgres://") ? connectionString : $"postgres://{connectionString}").Host}");
     options.UseNpgsql(connectionString);
 });
 
@@ -84,12 +108,26 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Seed the database
-using (var scope = app.Services.CreateScope())
+// Seed the database with better error handling
+try
 {
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<ApplicationDbContext>();
-    await DataSeeder.SeedData(context);
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        
+        Console.WriteLine("Attempting to seed database...");
+        await DataSeeder.SeedData(context);
+        Console.WriteLine("Database seeding completed successfully");
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Error seeding database: {ex.Message}");
+    if (app.Environment.IsDevelopment())
+    {
+        throw; // Only rethrow in development
+    }
 }
 
 app.Run();
