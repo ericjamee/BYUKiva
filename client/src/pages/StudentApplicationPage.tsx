@@ -16,7 +16,7 @@ export const StudentApplicationPage: React.FC = () => {
     story: '',
     academicProgress: '',
     futureGoals: '',
-    whyNeedLoan: '',
+    whyNeedDonation: '',
   });
   const [profilePicture, setProfilePicture] = useState<File | null>(null);
 
@@ -62,7 +62,7 @@ export const StudentApplicationPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Student Loan Application</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">Student Donation Application</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
@@ -186,15 +186,15 @@ export const StudentApplicationPage: React.FC = () => {
           </div>
 
           <div>
-            <label htmlFor="whyNeedLoan" className="block text-sm font-medium text-gray-700">
-              Why do you need this loan?
+            <label htmlFor="whyNeedDonation" className="block text-sm font-medium text-gray-700">
+              Why do you need this donation?
             </label>
             <textarea
-              id="whyNeedLoan"
-              name="whyNeedLoan"
+              id="whyNeedDonation"
+              name="whyNeedDonation"
               rows={4}
               required
-              value={formData.whyNeedLoan}
+              value={formData.whyNeedDonation}
               onChange={handleInputChange}
               className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#002E5D] focus:border-[#002E5D] sm:text-sm"
             />

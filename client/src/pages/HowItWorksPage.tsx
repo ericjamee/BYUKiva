@@ -42,7 +42,7 @@ export const HowItWorksPage: React.FC = () => {
             How It Works
           </h1>
           <p className="text-xl text-gray-600 mb-12">
-            Our platform connects BYU-Pathway students with supporters who provide affordable educational loans
+            Our platform connects BYU-Pathway students with supporters who provide educational donations
           </p>
         </div>
 

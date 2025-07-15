@@ -9,12 +9,12 @@ export function Navbar() {
             <div className="flex-shrink-0 flex items-center">
               <Link to="/" className="flex items-center">
                 <img
+                  className="h-8 w-auto"
                   src="/FHTL-Logo-Small.png"
-                  alt="Family History Tech Labs Logo"
-                  className="h-10 w-auto mr-2"
+                  alt="Human Connection Project Logo"
                 />
-                <span className="text-2xl font-bold text-blue-600">
-                  BYU Family History
+                <span className="ml-2 text-xl font-bold text-[#002E5D]">
+                    Human Connection Project
                 </span>
               </Link>
             </div>

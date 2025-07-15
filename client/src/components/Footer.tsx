@@ -12,7 +12,7 @@ export function Footer() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
               </svg>
-              <span className="text-xl font-bold text-white">BYU-Pathway Loans</span>
+              <span className="text-xl font-bold text-white">Human Connection Project</span>
             </div>
             <p className="text-gray-300 text-base">
               Empowering students in developing countries through education and direct support.
@@ -143,7 +143,7 @@ export function Footer() {
         </div>
         <div className="mt-12 border-t border-gray-700 pt-8">
           <p className="text-base text-gray-400 xl:text-center">
-            &copy; {new Date().getFullYear()} BYU-Pathway Loans. All rights reserved.
+            &copy; {new Date().getFullYear()} Human Connection Project. All rights reserved.
           </p>
         </div>
       </div>

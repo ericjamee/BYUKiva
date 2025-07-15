@@ -110,8 +110,8 @@ export const StudentProfile: React.FC = () => {
             </div>
 
             <div className="sm:col-span-2">
-              <dt className="text-sm font-medium text-gray-500">Why I Need This Loan</dt>
-              <dd className="mt-1 text-sm text-gray-900">{student.whyNeedLoan}</dd>
+              <dt className="text-sm font-medium text-gray-500">Why I Need This Donation</dt>
+              <dd className="mt-1 text-sm text-gray-900">{student.whyNeedDonation}</dd>
             </div>
           </div>
         </div>

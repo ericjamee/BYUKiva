@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Integrity.API.Models;
 
-public class LoanRepayment
+public class DonationRepayment
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();
     

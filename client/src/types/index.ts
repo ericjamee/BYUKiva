@@ -8,7 +8,7 @@ export interface Student {
   story?: string;
   academicProgress?: string;
   futureGoals?: string;
-  whyNeedLoan?: string;
+  whyNeedDonation?: string;
   profilePictureUrl: string;
   amountRaised: number;
   fundingGoal: number;
@@ -79,7 +79,7 @@ export enum RepaymentStatus {
   Missed = 'Missed'
 }
 
-export interface StudentApplicationData {
+export interface StudentApplication {
   name: string;
   email: string;
   country: string;
@@ -88,7 +88,7 @@ export interface StudentApplicationData {
   story: string;
   academicProgress: string;
   futureGoals: string;
-  whyNeedLoan: string;
+  whyNeedDonation: string;
   profilePicture?: File;
 }
 

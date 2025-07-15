@@ -103,8 +103,8 @@ export const AdminApplicationReviewPage: React.FC = () => {
               <dd className="mt-1 text-sm text-gray-900">{student.futureGoals}</dd>
             </div>
             <div className="sm:col-span-2">
-              <dt className="text-sm font-medium text-gray-500">Why Need Loan</dt>
-              <dd className="mt-1 text-sm text-gray-900">{student.whyNeedLoan}</dd>
+              <dt className="text-sm font-medium text-gray-500">Why Need Donation</dt>
+              <dd className="mt-1 text-sm text-gray-900">{student.whyNeedDonation}</dd>
             </div>
             <div className="sm:col-span-2">
               <dt className="text-sm font-medium text-gray-500">Admin Notes</dt>
