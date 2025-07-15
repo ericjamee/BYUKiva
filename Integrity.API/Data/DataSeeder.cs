@@ -38,7 +38,7 @@ public static class DataSeeder
                 EstimatedNamesPerYear = 100000,
                 StartDate = DateTime.UtcNow,
                 Story = "I am passionate about education...",
-                WhyNeedLoan = "I need this loan to continue my education...",
+                WhyNeedDonation = "I need this loan to continue my education...",
                 AcademicProgress = "Currently maintaining a 3.8 GPA...",
                 ApplicationStatus = "Approved"
             };
