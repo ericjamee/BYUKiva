@@ -19,7 +19,7 @@ export const submitApplication = async (data: StudentApplication): Promise<void>
     formData.append('profilePicture', data.profilePicture);
   }
 
-  await api.post('/students', formData, {
+  await api.post('/api/students', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -36,12 +36,12 @@ api.interceptors.request.use((config) => {
 });
 
 // Student endpoints
-export const getStudents = () => api.get<Student[]>('/students');
-export const getStudent = (id: string) => api.get<Student>(`/students/${id}`);
+export const getStudents = () => api.get<Student[]>('/api/students');
+export const getStudent = (id: string) => api.get<Student>(`/api/students/${id}`);
 
 // Donation endpoints
 export const createDonation = (data: Omit<Donation, 'id' | 'date'>) => 
-  api.post<Donation>('/donations', data);
+  api.post<Donation>('/api/donations', data);
 
 export const getStudentDonations = (studentId: string) => 
-  api.get<Donation[]>(`/students/${studentId}/donations`); 
+  api.get<Donation[]>(`/api/students/${studentId}/donations`); 
