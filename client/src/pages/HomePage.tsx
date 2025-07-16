@@ -15,7 +15,7 @@ export const HomePage: React.FC = () => {
                   <span className="block text-blue-600">Family History Mission</span>
                 </h1>
                 <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                  Help BYU-Pathway students earn while preserving family histories. Each funded student commits to indexing 100,000 names per year while pursuing their education.
+                  Join us in empowering BYU-Pathway students to earn while preserving precious family histories. Every funded student dedicates themselves to indexing 100,000 names annually during their education journey.
                 </p>
                 <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                   <div className="rounded-md shadow">
