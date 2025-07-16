@@ -31,16 +31,29 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 throw new InvalidOperationException("Invalid DATABASE_URL format. Expected format: postgres://username:password@host:port/database");
             }
             
-            connectionString = new NpgsqlConnectionStringBuilder
+            var builder = new NpgsqlConnectionStringBuilder
             {
                 Host = uri.Host,
-                Port = uri.Port,
                 Database = uri.AbsolutePath.TrimStart('/'),
                 Username = userInfo[0],
                 Password = userInfo[1],
                 SslMode = SslMode.Require,
-                TrustServerCertificate = true,
-            }.ToString();
+                TrustServerCertificate = true
+            };
+
+            // Only set port if it's valid
+            if (uri.Port > 0)
+            {
+                builder.Port = uri.Port;
+            }
+            else
+            {
+                // Use default PostgreSQL port
+                builder.Port = 5432;
+            }
+
+            connectionString = builder.ToString();
+            Console.WriteLine($"Using database host: {builder.Host} with port {builder.Port}");
         }
         catch (Exception ex)
         {
@@ -48,7 +61,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         }
     }
 
-    Console.WriteLine($"Connecting to database host: {new Uri(connectionString.StartsWith("postgres://") || connectionString.StartsWith("postgresql://") ? connectionString : $"postgres://{connectionString}").Host}");
     options.UseNpgsql(connectionString);
 });
 
