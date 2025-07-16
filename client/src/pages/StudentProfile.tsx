@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { api } from '../services/api';
+import { getStudent } from '../services/api';
 import type { Student } from '../types';
 import { DonationModal } from '../components/DonationModal';
 
@@ -15,7 +15,7 @@ export const StudentProfile: React.FC = () => {
     const fetchStudent = async () => {
       try {
         if (!id) return;
-        const response = await api.get<Student>(`/students/${id}`);
+        const response = await getStudent(id);
         setStudent(response.data);
       } catch (err) {
         setError('Failed to fetch student details');

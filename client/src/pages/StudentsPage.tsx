@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../services/api';
+import { getStudents } from '../services/api';
 import type { Student } from '../types';
 import StudentCard from '../components/StudentCard';
 
@@ -11,7 +11,7 @@ export const StudentsPage: React.FC = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await api.get<Student[]>('/students');
+        const response = await getStudents();
         setStudents(response.data);
       } catch (err) {
         setError('Failed to fetch students');

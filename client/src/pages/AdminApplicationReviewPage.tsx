@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { api } from '../services/api';
+import { getStudent } from '../services/api';
 import type { Student } from '../types';
 
 export const AdminApplicationReviewPage: React.FC = () => {
@@ -21,7 +21,7 @@ export const AdminApplicationReviewPage: React.FC = () => {
 
     const fetchStudentData = async () => {
       try {
-        const response = await api.get<Student>(`/students/${id}`);
+        const response = await getStudent(id!);
         setStudent(response.data);
       } catch (err) {
         setError('Failed to fetch student details');

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { api } from '../services/api';
+import { getStudents } from '../services/api';
 import type { Student } from '../types';
 
 export const AdminDashboardPage: React.FC = () => {
@@ -10,6 +10,7 @@ export const AdminDashboardPage: React.FC = () => {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [adminNotes, setAdminNotes] = useState('');
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -17,18 +18,18 @@ export const AdminDashboardPage: React.FC = () => {
       return;
     }
 
-    const fetchStudents = async () => {
+    const fetchStudentData = async () => {
       try {
-        const response = await api.get<Student[]>('/students');
+        const response = await getStudents();
         setStudents(response.data);
       } catch (err) {
-        setError('Failed to fetch students');
+        setError('Failed to fetch student details');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchStudents();
+    fetchStudentData();
   }, [isAuthenticated, navigate]);
 
   const pendingApplications = students.filter(student => student.status === 'pending');
