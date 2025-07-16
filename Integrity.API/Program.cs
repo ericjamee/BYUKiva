@@ -10,18 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
+    var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ?? 
+                          builder.Configuration.GetConnectionString("DefaultConnection");
     
     if (string.IsNullOrEmpty(connectionString))
     {
-        // Log warning about missing DATABASE_URL
-        Console.WriteLine("Warning: DATABASE_URL environment variable is not set, falling back to DefaultConnection");
-        connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-        
-        if (string.IsNullOrEmpty(connectionString))
-        {
-            throw new InvalidOperationException("No database connection string configured. Please set DATABASE_URL environment variable or DefaultConnection in appsettings.json");
-        }
+        throw new InvalidOperationException("No database connection string configured. Please set DATABASE_URL environment variable or DefaultConnection in appsettings.json");
     }
     
     // If we have a DATABASE_URL (from Heroku/Render), convert it to Npgsql format
