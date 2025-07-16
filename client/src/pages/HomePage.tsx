@@ -1,103 +1,107 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { getStudents } from '../services/api';
+import type { Student } from '../types';
+import StudentCard from '../components/StudentCard';
 
 export const HomePage: React.FC = () => {
+  const [students, setStudents] = useState<Student[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const response = await getStudents();
+        setStudents(response.data);
+      } catch (err) {
+        setError('Failed to fetch students');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStudents();
+  }, []);
+
   return (
-    <div className="min-h-screen bg-gray-50 overflow-x-hidden">
-      {/* Hero Section */}
-      <div className="relative bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
-            <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
-              <div className="sm:text-center lg:text-left">
-                <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-                  <span className="block">Fund a Student's</span>
-                  <span className="block text-blue-600">Family History Mission</span>
-                </h1>
-                <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                  Join us in empowering BYU-Pathway students to earn while preserving precious family histories. Every funded student dedicates themselves to indexing 100,000 names annually during their education journey.
-                </p>
-                <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
-                  <div className="rounded-md shadow">
-                    <Link
-                      to="/students"
-                      className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10"
-                    >
-                      Fund a Student
-                    </Link>
-                  </div>
-                  <div className="mt-3 sm:mt-0 sm:ml-3">
-                    <Link
-                      to="/how-it-works"
-                      className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 md:py-4 md:text-lg md:px-10"
-                    >
-                      Learn More
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </main>
+    <div className="min-h-screen bg-gray-50">
+      {/* Video Hero Section */}
+      <div className="relative h-screen w-full overflow-hidden">
+        {/* Video Background */}
+        <div className="absolute inset-0 w-full h-full">
+          <iframe 
+            className="w-full h-full scale-150"
+            src="https://www.youtube.com/embed/qIx19EkgrDk?si=4iuOjWWHjbRWarlI&start=175&autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=qIx19EkgrDk"
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black bg-opacity-50" />
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 h-full flex flex-col items-center justify-center text-white px-4">
+          <h1 className="text-5xl md:text-6xl font-bold text-center mb-6">
+            Fund a Student's
+            <span className="block mt-2">Family History Mission</span>
+          </h1>
+          <p className="text-xl md:text-2xl text-center max-w-3xl mb-8">
+            Join us in empowering BYU-Pathway students to earn while preserving precious family histories.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <a
+              href="#students"
+              className="px-8 py-3 bg-blue-600 hover:bg-blue-700 rounded-md font-medium text-lg transition-colors"
+            >
+              Fund a Student
+            </a>
+            <Link
+              to="/how-it-works"
+              className="px-8 py-3 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-md font-medium text-lg transition-colors"
+            >
+              Learn More
+            </Link>
+          </div>
+
+          {/* Scroll Indicator */}
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
           </div>
         </div>
       </div>
 
-      {/* Background Image Section */}
-      <div className="relative h-96 bg-fixed bg-cover bg-center w-full" style={{ backgroundImage: 'url("/byupathway student.jpg")' }}>
-        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-        <div className="relative max-w-7xl mx-auto h-full flex items-center justify-center px-4">
-          <div className="text-center text-white">
-            <h2 className="text-3xl font-bold mb-4">Empowering Students Through Family History</h2>
-            <p className="text-xl max-w-2xl mx-auto">
-              Your support helps students achieve their educational goals while preserving precious family connections.
-            </p>
-          </div>
+      {/* Students Section */}
+      <div id="students" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Meet Our Students</h2>
+          <p className="text-xl text-gray-600">Support these dedicated students in their educational journey</p>
         </div>
-      </div>
 
-      {/* Feature Section */}
-      <div className="py-12 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:text-center">
-            <h2 className="text-base text-blue-600 font-semibold tracking-wide uppercase">Our Impact</h2>
-            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-              Making a Difference Together
-            </p>
-            <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
-              Your donation helps preserve family histories while providing meaningful employment for BYU-Pathway students.
-            </p>
+        {loading ? (
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
           </div>
-
-          <div className="mt-10">
-            <div className="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10">
-              <div className="relative">
-                <div className="text-center">
-                  <h3 className="text-2xl font-bold text-gray-900">100K Names</h3>
-                  <p className="mt-2 text-gray-500">
-                    Each student indexes 100,000 names per year, preserving family histories for generations.
-                  </p>
-                </div>
-              </div>
-
-              <div className="relative">
-                <div className="text-center">
-                  <h3 className="text-2xl font-bold text-gray-900">Education</h3>
-                  <p className="mt-2 text-gray-500">
-                    Students earn while pursuing their BYU-Pathway degrees, building their future.
-                  </p>
-                </div>
-              </div>
-
-              <div className="relative">
-                <div className="text-center">
-                  <h3 className="text-2xl font-bold text-gray-900">Global Impact</h3>
-                  <p className="mt-2 text-gray-500">
-                    Your donation connects families across generations and continents.
-                  </p>
-                </div>
-              </div>
-            </div>
+        ) : error ? (
+          <div className="text-center py-12">
+            <p className="text-red-600">{error}</p>
           </div>
-        </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {students.map((student) => (
+              <StudentCard key={student.id} student={student} />
+            ))}
+            {students.length === 0 && (
+              <div className="col-span-full text-center py-12">
+                <p className="text-gray-600">No students found</p>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
