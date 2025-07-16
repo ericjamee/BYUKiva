@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { getStudent } from '../services/api';
+import { getStudent, api } from '../services/api';
 import type { Student } from '../types';
 
 export const AdminApplicationReviewPage: React.FC = () => {

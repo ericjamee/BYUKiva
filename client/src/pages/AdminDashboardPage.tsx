@@ -10,7 +10,6 @@ export const AdminDashboardPage: React.FC = () => {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [adminNotes, setAdminNotes] = useState('');
 
   useEffect(() => {
     if (!isAuthenticated) {
