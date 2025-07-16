@@ -10,18 +10,8 @@ services:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
       - key: DATABASE_URL
-        fromDatabase:
-          name: humanconnectionproject
-          property: connectionString
+        value: postgresql://humanconnectionproject_db_user:gblAYBWdBUVHQLhi9xuC5YknLmWvqjMS@dpg-d1rs9d6r433s73anj550-a/humanconnectionproject_db
       - key: ConnectionStrings__DefaultConnection
-        fromDatabase:
-          name: humanconnectionproject
-          property: connectionString
+        value: postgresql://humanconnectionproject_db_user:gblAYBWdBUVHQLhi9xuC5YknLmWvqjMS@dpg-d1rs9d6r433s73anj550-a/humanconnectionproject_db
       - key: Jwt__Key
-        generateValue: true
-
-databases:
-  - name: humanconnectionproject
-    plan: free
-    region: oregon
-    ipAllowList: [] 
+        generateValue: true 
