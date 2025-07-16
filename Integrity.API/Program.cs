@@ -88,6 +88,7 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy =>
     {
         policy.WithOrigins(
+                "https://byukiva.vercel.app",
                 "https://humanconnectionprojectbyu.vercel.app",
                 "http://localhost:5173", // Local development
                 "http://localhost:5174"  // Local development alternative port
