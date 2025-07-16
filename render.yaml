@@ -9,9 +9,5 @@ services:
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
-      - key: DATABASE_URL
-        value: postgresql://humanconnectionproject_db_user:gblAYBWdBUVHQLhi9xuC5YknLmWvqjMS@dpg-d1rs9d6r433s73anj550-a.oregon-postgres.render.com/humanconnectionproject_db
-      - key: ConnectionStrings__DefaultConnection
-        value: postgresql://humanconnectionproject_db_user:gblAYBWdBUVHQLhi9xuC5YknLmWvqjMS@dpg-d1rs9d6r433s73anj550-a.oregon-postgres.render.com/humanconnectionproject_db
       - key: Jwt__Key
         generateValue: true 
