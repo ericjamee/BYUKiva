@@ -37,8 +37,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 Database = uri.AbsolutePath.TrimStart('/'),
                 Username = userInfo[0],
                 Password = userInfo[1],
-                SslMode = SslMode.Require,
-                TrustServerCertificate = true
+                SslMode = SslMode.Require
             };
 
             // Only set port if it's valid
@@ -120,13 +119,17 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Seed the database with better error handling
+// Apply migrations and seed the database with better error handling
 try
 {
     using (var scope = app.Services.CreateScope())
     {
         var services = scope.ServiceProvider;
         var context = services.GetRequiredService<ApplicationDbContext>();
+        
+        Console.WriteLine("Attempting to apply migrations...");
+        await context.Database.MigrateAsync();
+        Console.WriteLine("Migrations applied successfully");
         
         Console.WriteLine("Attempting to seed database...");
         await DataSeeder.SeedData(context);
@@ -135,7 +138,7 @@ try
 }
 catch (Exception ex)
 {
-    Console.WriteLine($"Error seeding database: {ex.Message}");
+    Console.WriteLine($"Error setting up database: {ex.Message}");
     if (app.Environment.IsDevelopment())
     {
         throw; // Only rethrow in development
