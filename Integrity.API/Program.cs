@@ -25,7 +25,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     }
     
     // If we have a DATABASE_URL (from Heroku/Render), convert it to Npgsql format
-    if (connectionString.StartsWith("postgres://"))
+    if (connectionString.StartsWith("postgres://") || connectionString.StartsWith("postgresql://"))
     {
         try
         {
@@ -45,6 +45,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 Username = userInfo[0],
                 Password = userInfo[1],
                 SslMode = SslMode.Require,
+                TrustServerCertificate = true,
             }.ToString();
         }
         catch (Exception ex)
@@ -53,7 +54,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         }
     }
 
-    Console.WriteLine($"Connecting to database host: {new Uri(connectionString.StartsWith("postgres://") ? connectionString : $"postgres://{connectionString}").Host}");
+    Console.WriteLine($"Connecting to database host: {new Uri(connectionString.StartsWith("postgres://") || connectionString.StartsWith("postgresql://") ? connectionString : $"postgres://{connectionString}").Host}");
     options.UseNpgsql(connectionString);
 });
 
@@ -81,9 +82,13 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
+        policy.WithOrigins(
+                "https://humanconnectionprojectbyu.vercel.app",
+                "http://localhost:5173", // Local development
+                "http://localhost:5174"  // Local development alternative port
+            )
+            .AllowAnyMethod()
+            .AllowAnyHeader();
     });
 });
 
@@ -96,7 +101,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// Remove HTTPS redirection since Render.com handles it
+// app.UseHttpsRedirection();
 
 // Enable static file serving
 app.UseStaticFiles();
