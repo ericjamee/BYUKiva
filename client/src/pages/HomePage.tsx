@@ -32,7 +32,8 @@ export const HomePage: React.FC = () => {
         <div className="absolute inset-0 w-full h-full">
           <div className="relative w-full h-full">
             <iframe 
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[130%] h-[130%]"
+              className="absolute w-[150%] min-w-[100vw] h-[150%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+              style={{ objectFit: 'cover' }}
               src="https://www.youtube.com/embed/qIx19EkgrDk?si=4iuOjWWHjbRWarlI&start=175&autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=qIx19EkgrDk"
               title="YouTube video player"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
