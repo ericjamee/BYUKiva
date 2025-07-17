@@ -27,29 +27,30 @@ export const HomePage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Video Hero Section */}
-      <div className="relative h-screen w-full overflow-hidden">
+      <div className="relative h-[65vh] w-full overflow-hidden">
         {/* Video Background */}
         <div className="absolute inset-0 w-full h-full">
-          <iframe 
-            className="w-full h-full scale-150"
-            src="https://www.youtube.com/embed/qIx19EkgrDk?si=4iuOjWWHjbRWarlI&start=175&autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=qIx19EkgrDk"
-            title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerPolicy="strict-origin-when-cross-origin"
-            allowFullScreen
-          />
+          <div className="relative w-full h-full">
+            <iframe 
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[130%] h-[130%]"
+              src="https://www.youtube.com/embed/qIx19EkgrDk?si=4iuOjWWHjbRWarlI&start=175&autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=qIx19EkgrDk"
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
+          </div>
           {/* Overlay */}
           <div className="absolute inset-0 bg-black bg-opacity-50" />
         </div>
 
         {/* Content */}
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-white px-4">
-          <h1 className="text-5xl md:text-6xl font-bold text-center mb-6">
-            Fund a Student's
-            <span className="block mt-2">Family History Mission</span>
+          <h1 className="text-4xl md:text-5xl font-bold text-center mb-4">
+            Help Grow the Family Tree
           </h1>
-          <p className="text-xl md:text-2xl text-center max-w-3xl mb-8">
-            Join us in empowering BYU-Pathway students to earn while preserving precious family histories.
+          <p className="text-lg md:text-xl text-center max-w-3xl mb-6">
+            Fund a BYU-Pathway student to add 50,000 names to FamilySearch while earning their degree
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <a
@@ -67,7 +68,7 @@ export const HomePage: React.FC = () => {
           </div>
 
           {/* Scroll Indicator */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 animate-bounce">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
@@ -76,10 +77,10 @@ export const HomePage: React.FC = () => {
       </div>
 
       {/* Students Section */}
-      <div id="students" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Meet Our Students</h2>
-          <p className="text-xl text-gray-600">Support these dedicated students in their educational journey</p>
+      <div id="students" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-3">Meet Our Students</h2>
+          <p className="text-xl text-gray-600">Your donation provides employment and grows the Family Tree</p>
         </div>
 
         {loading ? (
