@@ -33,7 +33,7 @@ export const DonatePage: React.FC = () => {
         <div className="text-center">
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900">Make a Donation</h2>
           <p className="mt-2 text-sm text-gray-600">
-            Your donation helps preserve family histories while supporting education
+            Your donation helps grow the Family Tree while providing student employment
           </p>
         </div>
 

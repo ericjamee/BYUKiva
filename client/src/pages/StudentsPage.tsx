@@ -42,8 +42,8 @@ export const StudentsPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Students</h1>
-        <p className="mt-2 text-gray-600">Support BYU-Pathway students in their educational journey</p>
+        <h1 className="text-3xl font-bold text-gray-900">Meet Our Students</h1>
+        <p className="mt-2 text-gray-600">Fund a student to add 50,000 names to the Family Tree while earning their degree</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

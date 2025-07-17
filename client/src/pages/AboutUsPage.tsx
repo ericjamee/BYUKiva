@@ -9,7 +9,7 @@ export const AboutUsPage: React.FC = () => {
             About Us
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            We are dedicated to connecting BYU-Pathway students with meaningful employment opportunities in family history work, creating a lasting impact for both students and genealogical research.
+            We connect BYU-Pathway students with meaningful employment that grows the Family Tree, creating lasting impact for both students and future generations.
           </p>
         </div>
 
@@ -17,36 +17,37 @@ export const AboutUsPage: React.FC = () => {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Mission</h2>
             <p className="text-gray-600 mb-6">
-              To empower BYU-Pathway students through employment opportunities that not only support their educational journey but also contribute to the vital work of family history research, creating a dual impact that benefits both the students and the global genealogical community.
+              To provide BYU-Pathway students with employment that helps them earn their degree while adding 50,000 names to the Family Tree each year, creating a lasting legacy for families worldwide.
             </p>
             <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Values</h3>
             <ul className="list-disc list-inside text-gray-600 space-y-2">
-              <li>Educational and employment support</li>
-              <li>Family history preservation</li>
-              <li>Student empowerment</li>
-              <li>Community impact</li>
-              <li>Sustainable development</li>
+              <li>Growing the Family Tree</li>
+              <li>Student Employment</li>
+              <li>Educational Support</li>
+              <li>Family History Impact</li>
+              <li>Generational Connection</li>
             </ul>
           </div>
-          <div className="bg-white rounded-lg shadow-lg p-8">
+          
+          <div>
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Impact</h2>
             <div className="space-y-6">
               <div>
                 <h4 className="text-xl font-semibold text-gray-900 mb-2">Student Employment</h4>
                 <p className="text-gray-600">
-                  We provide students with one year of meaningful employment, helping them support their education while gaining valuable work experience.
+                  Each funded student receives one year of employment, helping them focus on their education while making a meaningful contribution.
                 </p>
               </div>
               <div>
-                <h4 className="text-xl font-semibold text-gray-900 mb-2">Family History Impact</h4>
+                <h4 className="text-xl font-semibold text-gray-900 mb-2">Family Tree Growth</h4>
                 <p className="text-gray-600">
-                  Each employed student contributes to adding over 100,000 names to family trees, preserving genealogical history for future generations.
+                  Every student adds 50,000 new names to the Family Tree during their funded year, helping connect families across generations.
                 </p>
               </div>
               <div>
-                <h4 className="text-xl font-semibold text-gray-900 mb-2">Educational Growth</h4>
+                <h4 className="text-xl font-semibold text-gray-900 mb-2">Educational Success</h4>
                 <p className="text-gray-600">
-                  Students can focus on their studies while gaining practical work experience in family history research.
+                  Students can focus on their BYU-Pathway degree while earning through meaningful family history work.
                 </p>
               </div>
             </div>
