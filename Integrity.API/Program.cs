@@ -93,6 +93,7 @@ builder.Services.AddCors(options =>
                 "https://humanconnectionprojectbyu-2r8lxwxpm-james-ericksons-projects.vercel.app",
                 "https://humanconnectionprojectbyu-jvkbpajso-james-ericksons-projects.vercel.app",
                 "https://humanconnectionprojectbyu-hqqeoajbk-james-ericksons-projects.vercel.app",
+                "https://humanconnectionprojectbyu-bv429gq7q-james-ericksons-projects.vercel.app",
                 "http://localhost:5173", // Local development
                 "http://localhost:5174"  // Local development alternative port
             )
