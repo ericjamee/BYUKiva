@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getStudent } from '../services/api';
 import type { Student } from '../types';
 import { DonationModal } from '../components/DonationModal';
+import { API_BASE_URL } from '../services/api';
 
 export const StudentProfile: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -44,10 +45,24 @@ export const StudentProfile: React.FC = () => {
   }
 
   const progressPercentage = (student.amountRaised / student.fundingGoal) * 100;
+  const imageUrl = student.profilePictureUrl.startsWith('http') 
+    ? student.profilePictureUrl 
+    : `${API_BASE_URL}${student.profilePictureUrl}`;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div className="relative">
+          <img
+            src={imageUrl}
+            alt={student.name}
+            className="w-full h-64 object-cover object-center"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = `${API_BASE_URL}/uploads/students/placeholder.jpg`;
+            }}
+          />
+        </div>
         <div className="px-4 py-5 sm:px-6 flex justify-between items-start">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">{student.name}</h1>
