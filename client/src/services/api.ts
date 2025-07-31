@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { Student, StudentApplication, Donation } from '../types';
 
-const API_BASE_URL = import.meta.env.PROD 
+export const API_BASE_URL = import.meta.env.PROD 
   ? 'https://byukiva.onrender.com'
   : 'http://localhost:5001';
 

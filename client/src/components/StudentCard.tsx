@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { Student } from '../types/index';
 import { Link } from 'react-router-dom';
 import { DonationModal } from './DonationModal';
+import { API_BASE_URL } from '../services/api';
 
 interface StudentCardProps {
   student: Student;
@@ -12,16 +13,21 @@ const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
   const progressPercentage = (student.amountRaised / student.fundingGoal) * 100;
   const needsHelp = progressPercentage < 25;
 
+  // Construct the full image URL using the API base URL
+  const imageUrl = student.profilePictureUrl.startsWith('http') 
+    ? student.profilePictureUrl 
+    : `${API_BASE_URL}${student.profilePictureUrl}`;
+
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <div className="relative">
         <img
-          src={student.profilePictureUrl}
+          src={imageUrl}
           alt={student.name}
           className="w-full h-48 object-cover"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
-            target.src = 'https://via.placeholder.com/400x300?text=No+Image';
+            target.src = `${API_BASE_URL}/uploads/students/placeholder.jpg`;
           }}
         />
         {needsHelp && (
