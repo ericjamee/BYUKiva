@@ -20,11 +20,11 @@ const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      <div className="relative">
+      <div className="relative aspect-[3/2] bg-gray-100">
         <img
           src={imageUrl}
           alt={student.name}
-          className="w-full h-48 object-cover"
+          className="absolute inset-0 w-full h-full object-cover object-top"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
             target.src = `${API_BASE_URL}/uploads/students/placeholder.jpg`;

@@ -52,16 +52,18 @@ export const StudentProfile: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-        <div className="relative">
-          <img
-            src={imageUrl}
-            alt={student.name}
-            className="w-full h-64 object-cover object-center"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.src = `${API_BASE_URL}/uploads/students/placeholder.jpg`;
-            }}
-          />
+        <div className="relative flex justify-center bg-gray-100">
+          <div className="w-full max-w-2xl aspect-[3/2] relative overflow-hidden">
+            <img
+              src={imageUrl}
+              alt={student.name}
+              className="absolute inset-0 w-full h-full object-cover object-top"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = `${API_BASE_URL}/uploads/students/placeholder.jpg`;
+              }}
+            />
+          </div>
         </div>
         <div className="px-4 py-5 sm:px-6 flex justify-between items-start">
           <div>
