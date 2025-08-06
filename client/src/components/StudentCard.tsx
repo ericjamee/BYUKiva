@@ -20,7 +20,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      <div className="relative aspect-[3/2] bg-gray-100">
+      <div className="relative aspect-[3/2.5] bg-gray-100">
         <img
           src={imageUrl}
           alt={student.name}
