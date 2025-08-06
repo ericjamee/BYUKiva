@@ -76,10 +76,10 @@ export const HomePage: React.FC = () => {
 
         {/* Content */}
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-white px-4">
-          <h1 className="text-4xl md:text-5xl font-bold text-center mb-4">
+          <h1 className="text-5xl md:text-7xl font-bold text-center mb-6">
             Help Grow the Family Tree
           </h1>
-          <p className="text-lg md:text-xl text-center max-w-3xl mb-6">
+          <p className="text-xl md:text-2xl text-center max-w-4xl mb-8">
             Fund a BYU-Pathway student to add 50,000 names to FamilySearch while earning their degree
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
