@@ -18,11 +18,24 @@ export const HomePage: React.FC = () => {
         console.log('Data type:', typeof response.data);
         console.log('Is array:', Array.isArray(response.data));
         
+        // Parse the response data if it's a string
+        let studentsData = response.data;
+        if (typeof response.data === 'string') {
+          try {
+            studentsData = JSON.parse(response.data);
+            console.log('Parsed data:', studentsData);
+          } catch (parseError) {
+            console.error('Failed to parse response data:', parseError);
+            setError('Invalid data format received from server');
+            return;
+          }
+        }
+        
         // Ensure we have an array of students
-        if (Array.isArray(response.data)) {
-          setStudents(response.data);
+        if (Array.isArray(studentsData)) {
+          setStudents(studentsData);
         } else {
-          console.error('Expected array but got:', typeof response.data);
+          console.error('Expected array but got:', typeof studentsData);
           setError('Invalid data format received from server');
         }
       } catch (err) {

@@ -20,7 +20,20 @@ export const AdminDashboardPage: React.FC = () => {
     const fetchStudentData = async () => {
       try {
         const response = await getStudents();
-        setStudents(response.data);
+        
+        // Parse the response data if it's a string
+        let studentsData = response.data;
+        if (typeof response.data === 'string') {
+          try {
+            studentsData = JSON.parse(response.data);
+          } catch (parseError) {
+            console.error('Failed to parse response data:', parseError);
+            setError('Invalid data format received from server');
+            return;
+          }
+        }
+        
+        setStudents(studentsData);
       } catch (err) {
         setError('Failed to fetch student details');
       } finally {

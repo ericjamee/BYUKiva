@@ -17,7 +17,20 @@ export const StudentProfile: React.FC = () => {
       try {
         if (!id) return;
         const response = await getStudent(id);
-        setStudent(response.data);
+        
+        // Parse the response data if it's a string
+        let studentData = response.data;
+        if (typeof response.data === 'string') {
+          try {
+            studentData = JSON.parse(response.data);
+          } catch (parseError) {
+            console.error('Failed to parse response data:', parseError);
+            setError('Invalid data format received from server');
+            return;
+          }
+        }
+        
+        setStudent(studentData);
       } catch (err) {
         setError('Failed to fetch student details');
       } finally {
