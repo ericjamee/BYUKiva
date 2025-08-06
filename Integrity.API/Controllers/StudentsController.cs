@@ -21,27 +21,47 @@ public class StudentsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
     {
-        return await _context.Students
-            .Include(s => s.ProgressReports)
-            .Include(s => s.Donations)
-            .OrderBy(s => (s.AmountRaised / s.FundingGoal)) // Order by percentage funded (lowest first)
-            .ToListAsync();
+        try
+        {
+            var students = await _context.Students
+                .Include(s => s.ProgressReports)
+                .Include(s => s.Donations)
+                .OrderBy(s => (s.AmountRaised / s.FundingGoal)) // Order by percentage funded (lowest first)
+                .ToListAsync();
+            
+            return Ok(students);
+        }
+        catch (Exception ex)
+        {
+            // Log the error for debugging
+            Console.WriteLine($"Error fetching students: {ex.Message}");
+            return StatusCode(500, new { error = "An error occurred while fetching students data" });
+        }
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Student>> GetStudent(string id)
     {
-        var student = await _context.Students
-            .Include(s => s.ProgressReports)
-            .Include(s => s.Donations)
-            .FirstOrDefaultAsync(s => s.Id == id);
-
-        if (student == null)
+        try
         {
-            return NotFound();
-        }
+            var student = await _context.Students
+                .Include(s => s.ProgressReports)
+                .Include(s => s.Donations)
+                .FirstOrDefaultAsync(s => s.Id == id);
 
-        return student;
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(student);
+        }
+        catch (Exception ex)
+        {
+            // Log the error for debugging
+            Console.WriteLine($"Error fetching student {id}: {ex.Message}");
+            return StatusCode(500, new { error = "An error occurred while fetching student data" });
+        }
     }
 
     [HttpGet("{id}/progress-reports")]
