@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Integrity.API.Models;
 
@@ -20,6 +21,7 @@ public class DonationRepayment
     [StringLength(500)]
     public string Notes { get; set; } = string.Empty;
     
+    [JsonIgnore]
     public Student? Student { get; set; }
 }
 

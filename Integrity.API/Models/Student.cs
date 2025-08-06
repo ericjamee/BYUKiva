@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Integrity.API.Models;
 
@@ -59,8 +60,10 @@ public class Student
     public string? AdminNotes { get; set; }
 
     [InverseProperty("Student")]
+    [JsonIgnore]
     public virtual ICollection<Donation> Donations { get; set; } = new List<Donation>();
 
     [InverseProperty("Student")]
+    [JsonIgnore]
     public virtual ICollection<ProgressReport> ProgressReports { get; set; } = new List<ProgressReport>();
 } 

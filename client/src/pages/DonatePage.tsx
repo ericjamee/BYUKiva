@@ -16,7 +16,8 @@ export const DonatePage: React.FC = () => {
         amount: parseFloat(amount),
         studentId: studentId,
         donorName: donorName,
-        message: '' // For MVP, we're not collecting messages
+        message: '', // For MVP, we're not collecting messages
+        status: 'Completed' // For MVP, all donations are completed immediately
       };
       
       await api.post('/donations', donation);

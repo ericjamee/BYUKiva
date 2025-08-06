@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Integrity.API.Models;
 
 public class Donor
@@ -6,5 +8,6 @@ public class Donor
     public string Name { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     
+    [JsonIgnore]
     public List<Donation> Donations { get; set; } = new();
 } 

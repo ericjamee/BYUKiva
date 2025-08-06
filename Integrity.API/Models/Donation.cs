@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Integrity.API.Models;
 
@@ -12,6 +13,8 @@ public class Donation
     
     [ForeignKey("Student")]
     public string StudentId { get; set; } = string.Empty;
+    
+    [JsonIgnore]
     public virtual Student? Student { get; set; }
     
     public string DonorName { get; set; } = "Anonymous";

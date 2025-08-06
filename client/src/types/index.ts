@@ -18,8 +18,7 @@ export interface Student {
   startDate: string;
   applicationDate: string;
   adminNotes?: string;
-  progressReports?: ProgressReport[];
-  donations?: Donation[];
+  familyHistoryExperience?: string;
 }
 
 export interface Donation {
@@ -29,6 +28,7 @@ export interface Donation {
   donorName: string;
   message?: string;
   date: string;
+  status: string;
 }
 
 export enum DonationType {
@@ -41,7 +41,6 @@ export interface Donor {
   id: string;
   name: string;
   email: string;
-  donations?: Donation[];
 }
 
 export interface User {
@@ -61,10 +60,11 @@ export interface ProgressReport {
   id: string;
   studentId: string;
   date: string;
-  academicPerformance: string;
+  namesIndexed: number;
+  familyHistoryActivities: string;
   challenges: string;
-  goals: string;
-  nextSteps: string;
+  achievements: string;
+  pathwayProgress: string;
 }
 
 export interface LoanRepayment {
@@ -74,7 +74,6 @@ export interface LoanRepayment {
   date: Date;
   status: RepaymentStatus;
   notes: string;
-  student?: Student;
 }
 
 export enum RepaymentStatus {

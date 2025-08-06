@@ -22,7 +22,6 @@ public class DonationsController : ControllerBase
     public async Task<ActionResult<Donation>> CreateDonation([FromBody] DonationDto donationDto)
     {
         var student = await _context.Students
-            .Include(s => s.Donations)
             .FirstOrDefaultAsync(s => s.Id == donationDto.StudentId);
 
         if (student == null)

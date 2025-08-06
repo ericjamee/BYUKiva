@@ -25,7 +25,8 @@ export const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, s
         amount: donationAmount,
         studentId: student.id,
         donorName: 'Anonymous', // For MVP
-        message: '' // For MVP
+        message: '', // For MVP
+        status: 'Completed' // For MVP, all donations are completed immediately
       });
 
       onClose();

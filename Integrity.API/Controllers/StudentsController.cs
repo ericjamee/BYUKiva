@@ -21,54 +21,15 @@ public class StudentsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
     {
-        try
-        {
-            var students = await _context.Students
-                .Include(s => s.ProgressReports)
-                .Include(s => s.Donations)
-                .OrderBy(s => (s.AmountRaised / s.FundingGoal)) // Order by percentage funded (lowest first)
-                .ToListAsync();
-            
-            return Ok(students);
-        }
-        catch (Exception ex)
-        {
-            // Log the error for debugging
-            Console.WriteLine($"Error fetching students: {ex.Message}");
-            return StatusCode(500, new { error = "An error occurred while fetching students data" });
-        }
+        return await _context.Students
+            .OrderBy(s => (s.AmountRaised / s.FundingGoal)) // Order by percentage funded (lowest first)
+            .ToListAsync();
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Student>> GetStudent(string id)
     {
-        try
-        {
-            var student = await _context.Students
-                .Include(s => s.ProgressReports)
-                .Include(s => s.Donations)
-                .FirstOrDefaultAsync(s => s.Id == id);
-
-            if (student == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(student);
-        }
-        catch (Exception ex)
-        {
-            // Log the error for debugging
-            Console.WriteLine($"Error fetching student {id}: {ex.Message}");
-            return StatusCode(500, new { error = "An error occurred while fetching student data" });
-        }
-    }
-
-    [HttpGet("{id}/progress-reports")]
-    public async Task<ActionResult<IEnumerable<ProgressReport>>> GetStudentProgressReports(string id)
-    {
         var student = await _context.Students
-            .Include(s => s.ProgressReports)
             .FirstOrDefaultAsync(s => s.Id == id);
 
         if (student == null)
@@ -76,7 +37,27 @@ public class StudentsController : ControllerBase
             return NotFound();
         }
 
-        return Ok(student.ProgressReports);
+        return student;
+    }
+
+    [HttpGet("{id}/progress-reports")]
+    public async Task<ActionResult<IEnumerable<ProgressReport>>> GetStudentProgressReports(string id)
+    {
+        var progressReports = await _context.ProgressReports
+            .Where(pr => pr.StudentId == id)
+            .ToListAsync();
+
+        return Ok(progressReports);
+    }
+
+    [HttpGet("{id}/donations")]
+    public async Task<ActionResult<IEnumerable<Donation>>> GetStudentDonations(string id)
+    {
+        var donations = await _context.Donations
+            .Where(d => d.StudentId == id)
+            .ToListAsync();
+
+        return Ok(donations);
     }
 
     public class StudentDto
