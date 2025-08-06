@@ -1,7 +1,8 @@
 export interface Student {
   id: string;
+  firstName: string;
+  lastName: string;
   name: string;
-  email: string;
   country: string;
   pathwayProgram: string;
   desiredDegree: string;
@@ -12,7 +13,11 @@ export interface Student {
   profilePictureUrl: string;
   amountRaised: number;
   fundingGoal: number;
-  status: 'pending' | 'approved' | 'rejected';
+  applicationStatus: string;
+  estimatedNamesPerYear: number;
+  startDate: string;
+  applicationDate: string;
+  adminNotes?: string;
   progressReports?: ProgressReport[];
   donations?: Donation[];
 }

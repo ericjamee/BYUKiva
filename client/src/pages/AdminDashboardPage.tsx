@@ -31,9 +31,9 @@ export const AdminDashboardPage: React.FC = () => {
     fetchStudentData();
   }, [isAuthenticated, navigate]);
 
-  const pendingApplications = students.filter(student => student.status === 'pending');
-  const approvedApplications = students.filter(student => student.status === 'approved');
-  const rejectedApplications = students.filter(student => student.status === 'rejected');
+  const pendingApplications = students.filter(student => student.applicationStatus === 'Pending');
+  const approvedApplications = students.filter(student => student.applicationStatus === 'Approved');
+  const rejectedApplications = students.filter(student => student.applicationStatus === 'Rejected');
 
   if (loading) {
     return (

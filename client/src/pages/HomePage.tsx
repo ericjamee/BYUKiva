@@ -13,8 +13,20 @@ export const HomePage: React.FC = () => {
     const fetchStudents = async () => {
       try {
         const response = await getStudents();
-        setStudents(response.data);
+        console.log('API Response:', response);
+        console.log('Response data:', response.data);
+        console.log('Data type:', typeof response.data);
+        console.log('Is array:', Array.isArray(response.data));
+        
+        // Ensure we have an array of students
+        if (Array.isArray(response.data)) {
+          setStudents(response.data);
+        } else {
+          console.error('Expected array but got:', typeof response.data);
+          setError('Invalid data format received from server');
+        }
       } catch (err) {
+        console.error('Error fetching students:', err);
         setError('Failed to fetch students');
       } finally {
         setLoading(false);
