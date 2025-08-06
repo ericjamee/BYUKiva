@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { Student } from '../types';
-import { api } from '../services/api';
+import { createDonation } from '../services/api';
 
 interface DonationModalProps {
   isOpen: boolean;
@@ -21,7 +21,7 @@ export const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, s
       
       const donationAmount = customAmount ? parseFloat(customAmount) : amount;
       
-      await api.post('/donations', {
+      await createDonation({
         amount: donationAmount,
         studentId: student.id,
         donorName: 'Anonymous', // For MVP

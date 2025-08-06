@@ -53,11 +53,11 @@ public static class DataSeeder
 
             new Student
             {
-                FirstName = "LUCKY",
-                LastName = "ISOWO",
-                Name = "LUCKY ISOWO",
+                FirstName = "Lucky",
+                LastName = "Isowo",
+                Name = "Lucky Isowo",
                 Country = "Nigeria",
-                ProfilePictureUrl = "/uploads/students/luckyIsowo.jpg",
+                ProfilePictureUrl = "/uploads/students/LuckyIsowo.png",
                 FundingGoal = 1000,
                 AmountRaised = 0,
                 PathwayProgram = "Family history research",
@@ -409,7 +409,7 @@ public static class DataSeeder
                 LastName = "Chigbundu",
                 Name = "Kennedy Chigbundu",
                 Country = "Nigeria",
-                ProfilePictureUrl = "/uploads/students/KennedyChirinda.jpg",
+                ProfilePictureUrl = "/uploads/students/KennedyChigbundu.jpg",
                 FundingGoal = 1000,
                 AmountRaised = 0,
                 PathwayProgram = "Professional Studies.",
@@ -583,7 +583,7 @@ public static class DataSeeder
                 LastName = "Victor Ibitamuno",
                 Name = "Pamela Victor Ibitamuno",
                 Country = "Nigeria",
-                ProfilePictureUrl = "/uploads/students/PamelaVictorIbitamuno.jpg",
+                ProfilePictureUrl = "/uploads/students/PamelaVictorIbitamuno.JPG",
                 FundingGoal = 1000,
                 AmountRaised = 0,
                 PathwayProgram = "Communication",
